@@ -1,0 +1,25 @@
+author: JamesHealey94
+website: https://github.com/JamesHealey94
+
+name: RestrictedTeleport
+main: com.gmail.jameshealey1994.restrictedteleport.RestrictedTeleport
+version: 1.1
+
+commands:
+    rtp:
+        description: Teleports you to a player (assuming they have can be teleported to)
+        aliases: [restrictedteleport, teleport, to, tp, warpto]
+        usage: /<command> <username> to teleport to a player!
+permissions:
+    rtp.teleport:
+        description: Allows you to teleport to players who have rtp.beteleportedto
+        default: false
+    rtp.beteleportedto:
+        description: Allows you to be teleported to
+        default: false
+    rtp.teleport.override:
+        description: Allows you to teleport to anyone, regardless of their permissions
+        default: false
+    rtp.teleport.silent:
+        description: Allows you to teleport silently
+        default: false
