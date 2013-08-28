@@ -39,12 +39,12 @@ public final class RestrictedTeleport extends JavaPlugin
                     }
                     else
                     {
-                        if (! (player.hasPermission("rtp.teleport") && player.hasPermission("rtp.teleport.override")))
+                        if (! (player.hasPermission("rtp.teleport") || player.hasPermission("rtp.teleport.override")))
                         {
                             player.sendMessage(ChatColor.RED + "You do not have permissions to teleport right now");
                             return true;
                         }
-                        if (! (target.hasPermission("rtp.beteleportedto") && player.hasPermission("rtp.teleport.override")))
+                        if (! (target.hasPermission("rtp.beteleportedto") || player.hasPermission("rtp.teleport.override")))
                         {
                             player.sendMessage(ChatColor.RED + target.getDisplayName() + " cannot be teleported to right now");
                             return true;

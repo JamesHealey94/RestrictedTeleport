@@ -21,5 +21,5 @@ permissions:
         description: Allows you to teleport to anyone, regardless of their permissions
         default: false
     rtp.teleport.silent:
-        description: Allows you to teleport silently
+        description: Allows you to teleport silently (assuming you have permissions to teleport)
         default: false
