@@ -17,9 +17,12 @@ permissions:
     rtp.beteleportedto:
         description: Allows you to be teleported to
         default: false
-    rtp.teleport.override:
-        description: Allows you to teleport to anyone, regardless of their permissions
-        default: false
     rtp.teleport.silent:
         description: Allows you to teleport silently (assuming you have permissions to teleport)
+        default: false
+    rtp.teleport.others:
+        description: Allows you to teleport anyone to anyone, regardless of permissions.
+        default: false
+    rtp.teleport.override:
+        description: Allows you to teleport to anyone, regardless of their permissions
         default: false
