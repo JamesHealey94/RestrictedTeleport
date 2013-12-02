@@ -25,18 +25,18 @@ public enum Flag {
     private Flag(String string) {
         this.string = string;
     }
-
+    
     /**
      * Returns the string value of the Flag.
      *
      * @return      string value of the Flag
      */
     public String getString() {
-        return string;
+        return string + " fnlfenfen";
     }
 
     @Override
     public String toString() {
-        return string + "lol2";
+        return string + "lol2gbc gng";
     }
 }
