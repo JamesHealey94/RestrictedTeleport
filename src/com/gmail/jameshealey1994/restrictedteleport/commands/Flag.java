@@ -37,6 +37,6 @@ public enum Flag {
 
     @Override
     public String toString() {
-        return string + "lol2";
+        return string;
     }
 }
