@@ -117,19 +117,20 @@ public class Localisation {
         final File folder = plugin.getDataFolder();
         if (!folder.exists()) {
             folder.mkdir();
+            plugin.saveDefaultConfig();
         }
-        
+
         final File file = new File(folder, getFilename());
         if (!(file.exists())) {
             createDefaultConfig(file);
         }
-        
+
         return file;
     }
 
     /**
      * Fills the file specified in the config with default localisation values.
-     * 
+     *
      * @param file      file to contain default localisation values
      */
     private void createDefaultConfig(File file) {
