@@ -1,7 +1,8 @@
 package com.gmail.jameshealey1994.restrictedteleport.commands;
 
+import com.gmail.jameshealey1994.restrictedteleport.localisation.Localisation;
+import com.gmail.jameshealey1994.restrictedteleport.localisation.LocalisationEntry;
 import com.gmail.jameshealey1994.restrictedteleport.permissions.RTPermission;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -41,15 +42,21 @@ public class RTCommandExecutor implements CommandExecutor {
      */
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
+        final Localisation localisation = new Localisation(plugin);
         final String teleporterName;
         final String targetName;
         final boolean silent;
 
         switch (args.length) {
+            case 0: {
+                sender.sendMessage(localisation.get(LocalisationEntry.ERR_SPECIFY_PLAYER));
+                return true;
+            }
             case 1: {
                 // /tp as1lv3rn1nja
                 if (!(sender instanceof Player)) {
-                    return false;
+                    sender.sendMessage(localisation.get(LocalisationEntry.ERR_PLAYER_ONLY_COMMAND));
+                    return true;
                 }
 
                 teleporterName = ((Player) sender).getName();
@@ -84,58 +91,59 @@ public class RTCommandExecutor implements CommandExecutor {
                 break;
             }
             default: {
+                sender.sendMessage(localisation.get(LocalisationEntry.ERR_TOO_MANY_ARGUMENTS));
                 return false;
             }
         }
 
         final Player teleporter = plugin.getServer().getPlayer(teleporterName);
         if (teleporter == null) {
-            sender.sendMessage(ChatColor.RED + "Player '" + teleporterName + "' is not online or is invalid");
-            return false;
+            sender.sendMessage(localisation.get(LocalisationEntry.ERR_PLAYER_NOT_FOUND, teleporterName));
+            return true;
         }
 
         final Player target = plugin.getServer().getPlayer(targetName);
         if (target == null) {
-            sender.sendMessage(ChatColor.RED + "Player '" + targetName + "' is not online or is invalid");
-            return false;
+            sender.sendMessage(localisation.get(LocalisationEntry.ERR_PLAYER_NOT_FOUND, targetName));
+            return true;
         }
 
         if (!sender.equals(target)) {
             if (sender.equals(teleporter)) {
                 if (!teleporter.hasPermission(RTPermission.TELEPORT_OVERRIDE.getPermission())) {
                     if (!teleporter.hasPermission(RTPermission.TELEPORT.getPermission())) {
-                        sender.sendMessage(ChatColor.RED + "You do not have permissions to teleport right now");
+                        sender.sendMessage(localisation.get(LocalisationEntry.ERR_PERMISSION_DENIED_TELEPORT));
                         return true;
                     }
                     if (!target.hasPermission(RTPermission.BE_TELEPORTED_TO.getPermission())) {
-                        sender.sendMessage(ChatColor.RED + target.getDisplayName() + " cannot be teleported to right now");
+                        sender.sendMessage(localisation.get(LocalisationEntry.ERR_PLAYER_CANNOT_BE_TELEPORTED_TO, target.getDisplayName()));
                         return true;
                     }
                 }
             } else if ((sender instanceof Player) && (!(((Player) sender).hasPermission(RTPermission.TELEPORT_OTHERS.getPermission())))) {
-                sender.sendMessage(ChatColor.RED + "You do not have permissions to teleport other players");
-                return false;
+                sender.sendMessage(localisation.get(LocalisationEntry.ERR_PERMISSION_DENIED_TELEPORT_OTHERS));
+                return true;
             }
         }
 
         if (silent) {
             if ((!(sender instanceof Player)) || ((sender instanceof Player) && (((Player) sender).hasPermission(RTPermission.TELEPORT_SILENT.getPermission())))) {
                 teleporter.teleport(target.getLocation());
-                teleporter.sendMessage(ChatColor.GOLD + "Teleported to " + target.getDisplayName() + " (Silently)");
+                teleporter.sendMessage(localisation.get(LocalisationEntry.MSG_TELEPORTED_SILENTLY, target.getDisplayName()));
                 if (!teleporter.equals(sender)) {
-                    sender.sendMessage(ChatColor.GRAY + "Teleported " + teleporter.getDisplayName() + " to " + target.getDisplayName() + " (Silently)");
+                    sender.sendMessage(localisation.get(LocalisationEntry.MSG_TELEPORTED_PLAYER_TO_PLAYER_SILENTLY, teleporter.getDisplayName(), target.getDisplayName()));
                 }
                 return true;
             } else {
-                sender.sendMessage(ChatColor.RED + "You do not have permissions to teleport silently");
+                sender.sendMessage(localisation.get(LocalisationEntry.ERR_PERMISSION_DENIED_TELEPORT_SILENT));
                 return false;
             }
         } else {
             teleporter.teleport(target.getLocation());
-            teleporter.sendMessage(ChatColor.GOLD + "Teleported to " + target.getDisplayName());
-            target.sendMessage(ChatColor.GRAY + teleporter.getDisplayName() + " teleported to you");
+            teleporter.sendMessage(localisation.get(LocalisationEntry.MSG_TELEPORTED, target.getDisplayName()));
+            target.sendMessage(localisation.get(LocalisationEntry.MSG_TELEPORTED_TO_BY_PLAYER, teleporter.getDisplayName()));
             if (!teleporter.equals(sender)) {
-                sender.sendMessage(ChatColor.GRAY + "Teleported " + teleporter.getDisplayName() + " to " + target.getDisplayName());
+                sender.sendMessage(localisation.get(LocalisationEntry.MSG_TELEPORTED_PLAYER_TO_PLAYER, teleporter.getDisplayName(), target.getDisplayName()));
             }
             return true;
         }
