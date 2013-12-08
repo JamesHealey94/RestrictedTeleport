@@ -96,18 +96,21 @@ public class RTCommandExecutor implements CommandExecutor {
             }
         }
 
+        // Check teleporter is a valid and online player.
         final Player teleporter = plugin.getServer().getPlayer(teleporterName);
         if (teleporter == null) {
             sender.sendMessage(localisation.get(LocalisationEntry.ERR_PLAYER_NOT_FOUND, teleporterName));
             return true;
         }
 
+        // Check target is a valid and online player.
         final Player target = plugin.getServer().getPlayer(targetName);
         if (target == null) {
             sender.sendMessage(localisation.get(LocalisationEntry.ERR_PLAYER_NOT_FOUND, targetName));
             return true;
         }
 
+        // Initial permissions check
         if (!sender.equals(target)) {
             if (sender.equals(teleporter)) {
                 if (!teleporter.hasPermission(RTPermission.TELEPORT_OVERRIDE.getPermission())) {
@@ -126,6 +129,7 @@ public class RTCommandExecutor implements CommandExecutor {
             }
         }
 
+        // Secondary permissions check, and actual teleporting.
         if (silent) {
             if ((!(sender instanceof Player)) || ((sender instanceof Player) && (((Player) sender).hasPermission(RTPermission.TELEPORT_SILENT.getPermission())))) {
                 teleporter.teleport(target.getLocation());
