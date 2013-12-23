@@ -123,7 +123,7 @@ public class RTCommandExecutor implements CommandExecutor {
                         return true;
                     }
                 }
-            } else if ((sender instanceof Player) && (!(((Player) sender).hasPermission(RTPermission.TELEPORT_OTHERS.getPermission())))) {
+            } else if (!sender.hasPermission(RTPermission.TELEPORT_OTHERS.getPermission())) {
                 sender.sendMessage(localisation.get(LocalisationEntry.ERR_PERMISSION_DENIED_TELEPORT_OTHERS));
                 return true;
             }
@@ -131,7 +131,7 @@ public class RTCommandExecutor implements CommandExecutor {
 
         // Secondary permissions check, and actual teleporting.
         if (silent) {
-            if ((!(sender instanceof Player)) || ((sender instanceof Player) && (((Player) sender).hasPermission(RTPermission.TELEPORT_SILENT.getPermission())))) {
+            if (canSilentlyTeleport(sender)) {
                 teleporter.teleport(target.getLocation());
                 teleporter.sendMessage(localisation.get(LocalisationEntry.MSG_TELEPORTED_SILENTLY, target.getDisplayName()));
                 if (!teleporter.equals(sender)) {
@@ -151,5 +151,15 @@ public class RTCommandExecutor implements CommandExecutor {
             }
             return true;
         }
+    }
+
+    /**
+     * Returns if the sender has permissions to teleport silently.
+     * 
+     * @param sender    the sender to have permissions checked
+     * @return          if the sender has permissions to teleport silently
+     */
+    public boolean canSilentlyTeleport(CommandSender sender) {
+        return sender.hasPermission(RTPermission.TELEPORT_SILENT.getPermission());
     }
 }
