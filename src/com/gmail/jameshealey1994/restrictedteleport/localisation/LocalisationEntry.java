@@ -84,6 +84,17 @@ public enum LocalisationEntry {
             "&cToo many arguments"),
 
     /**
+     * Message telling user that a shorter command is available when they
+     * use the command /tp senderName targetName.
+     * %1$s - command the user sent
+     * %2$s - target name
+     */
+    MSG_SHORTER_COMMAND_AVAILABLE (
+            "MsgShorterCommandAvailable",
+            "%1$s - command the user sent",
+            "&7Note: You can just do /%1$s %2$s"),
+
+    /**
      * Message to sender confirming they teleported a player to another player
      * silently.
      * %1$s - teleporter name

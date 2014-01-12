@@ -129,6 +129,11 @@ public class RTCommandExecutor implements CommandExecutor {
             }
         }
 
+        final boolean shorterCommandAvailable = sender.equals(teleporter) && ((args.length == 2 && !silent) || (args.length == 3));
+        if (shorterCommandAvailable) {
+            sender.sendMessage(localisation.get(LocalisationEntry.MSG_SHORTER_COMMAND_AVAILABLE, commandLabel, target.getName()));
+        }
+
         // Secondary permissions check, and actual teleporting.
         if (silent) {
             if (canSilentlyTeleport(sender)) {
@@ -155,7 +160,7 @@ public class RTCommandExecutor implements CommandExecutor {
 
     /**
      * Returns if the sender has permissions to teleport silently.
-     * 
+     *
      * @param sender    the sender to have permissions checked
      * @return          if the sender has permissions to teleport silently
      */

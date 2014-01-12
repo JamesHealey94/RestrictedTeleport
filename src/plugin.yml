@@ -3,7 +3,7 @@ website: https://github.com/JamesHealey94
 
 name: RestrictedTeleport
 main: com.gmail.jameshealey1994.restrictedteleport.RestrictedTeleport
-version: 1.4
+version: 1.4.1
 
 commands:
     rtp:
