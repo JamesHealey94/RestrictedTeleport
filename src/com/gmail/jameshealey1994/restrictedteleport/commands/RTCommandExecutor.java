@@ -111,22 +111,20 @@ public class RTCommandExecutor implements CommandExecutor {
         }
 
         // Initial permissions check
-        if (!sender.equals(target)) {
-            if (sender.equals(teleporter)) {
-                if (!teleporter.hasPermission(RTPermission.TELEPORT_OVERRIDE.getPermission())) {
-                    if (!teleporter.hasPermission(RTPermission.TELEPORT.getPermission())) {
-                        sender.sendMessage(localisation.get(LocalisationEntry.ERR_PERMISSION_DENIED_TELEPORT));
-                        return true;
-                    }
-                    if (!target.hasPermission(RTPermission.BE_TELEPORTED_TO.getPermission())) {
-                        sender.sendMessage(localisation.get(LocalisationEntry.ERR_PLAYER_CANNOT_BE_TELEPORTED_TO, target.getDisplayName()));
-                        return true;
-                    }
+        if (sender.equals(teleporter)) {
+            if (!teleporter.hasPermission(RTPermission.TELEPORT_OVERRIDE.getPermission())) {
+                if (!teleporter.hasPermission(RTPermission.TELEPORT.getPermission())) {
+                    sender.sendMessage(localisation.get(LocalisationEntry.ERR_PERMISSION_DENIED_TELEPORT));
+                    return true;
                 }
-            } else if (!sender.hasPermission(RTPermission.TELEPORT_OTHERS.getPermission())) {
-                sender.sendMessage(localisation.get(LocalisationEntry.ERR_PERMISSION_DENIED_TELEPORT_OTHERS));
-                return true;
+                if (!target.hasPermission(RTPermission.BE_TELEPORTED_TO.getPermission())) {
+                    sender.sendMessage(localisation.get(LocalisationEntry.ERR_PLAYER_CANNOT_BE_TELEPORTED_TO, target.getDisplayName()));
+                    return true;
+                }
             }
+        } else if (!sender.hasPermission(RTPermission.TELEPORT_OTHERS.getPermission())) {
+            sender.sendMessage(localisation.get(LocalisationEntry.ERR_PERMISSION_DENIED_TELEPORT_OTHERS));
+            return true;
         }
 
         final boolean shorterCommandAvailable = sender.equals(teleporter) && ((args.length == 2 && !silent) || (args.length == 3));
